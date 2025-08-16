@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebas
 import { getFirestore, collection, getDoc, doc, addDoc, updateDoc, deleteField } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import { convertToHash } from "./utils.js";
 import { FIREBASECONFIG } from "./config.js";
+import { renderQuotes } from "./render.js";
 
 class UserDatabase {
   static instance = null;
@@ -58,12 +59,23 @@ class QuoteRepository {
   addQuote(quote) {
     const hash = convertToHash(quote);
     this.#db.add(this.#documentName, { [hash] : quote });
+    this.#quotes[hash] = quote;
   }
 
   removeQuote(quote) {
     const hash = convertToHash(quote);
     this.#db.remove(this.#documentName, hash);
+    delete this.#quotes[hash];
   }
+
+  saveLocal() {
+    localStorage.setItem(this.#documentName, this.#quotes);
+  }
+
+  loadLocal() {
+    return localStorage.getItem(this.#documentName);
+  }
+
 }
 
 class RepositoryFactory {
@@ -76,9 +88,6 @@ class RepositoryFactory {
 
 const userQuoteRepo = RepositoryFactory.createQuoteRepository();
 
-console.log(await new UserDatabase().get("quote_book"));
-console.log(await new UserDatabase().add("quote_book", { "sdfff": "bombo" } ));
-console.log(await new UserDatabase().remove("quote_book", "sdfff"));
 // Get quote
 const addQuoteButton = document.getElementById("new-quote-button");
 
@@ -86,6 +95,10 @@ addQuoteButton.addEventListener("click", () => {
   const quoteInput = document.getElementById("new-quote-field");
 
   userQuoteRepo.addQuote(quoteInput.value);
+  renderQuotes([quoteInput.value]);
   quoteInput.value = ''
 
 });
+
+
+renderQuotes(Object.values(await userQuoteRepo.getQuotes()));
