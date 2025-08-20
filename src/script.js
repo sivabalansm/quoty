@@ -102,3 +102,28 @@ addQuoteButton.addEventListener("click", () => {
 
 
 renderQuotes(Object.values(await userQuoteRepo.getQuotes()));
+
+// service worker registeration
+async function registerServiceWorker() {
+        const swRegistration = await navigator.serviceWorker.register("./sw.js");
+        return swRegistration;
+}
+
+async function requestNotificationPerms() {
+        const permission = await window.Notification.requestPermission();
+        if (permission !== 'granted') {
+                console.log("Permission for notification refused");
+        }
+}
+
+function showNotification(title, body, swRegistration) {
+        const options = {
+                body,
+        }
+        swRegistration.showNotification(title, options);
+}
+
+const swRegistration = await registerServiceWorker();
+await requestNotificationPerms()
+showNotification("Yo", "bozo", swRegistration);
+
