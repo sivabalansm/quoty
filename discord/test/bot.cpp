@@ -1,9 +1,9 @@
 #include <dpp/dpp.h>
  
-const char* BOT_TOKEN = std::getenv("BOT_TOKEN");
 
  
 int main() {
+        const char* BOT_TOKEN = std::getenv("BOT_TOKEN");
         if (BOT_TOKEN == NULL) {
                 std::cout << "$BOT_TOKEN Not defined" << std::endl;
                 std::exit(1);
