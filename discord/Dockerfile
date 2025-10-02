@@ -8,6 +8,5 @@ RUN wget -O dpp.deb https://dl.dpp.dev/
 RUN dpkg -i dpp.deb
 
 WORKDIR /app
-COPY ./entrypoint.sh .
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
