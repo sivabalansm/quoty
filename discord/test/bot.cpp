@@ -1,7 +1,5 @@
 #include <dpp/dpp.h>
  
-
- 
 int main() {
         const char* BOT_TOKEN = std::getenv("BOT_TOKEN");
         if (BOT_TOKEN == NULL) {
