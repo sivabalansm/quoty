@@ -3,6 +3,12 @@
  
 
 int main() {
+        // setup quotes
+        std::vector<std::string> quotel = {"hel", "nig", "bli"};
+        QuoteRepo quotes = QuoteRepo(quotel);
+        std::cout << quotes.getQuotes()[0] << std::endl;
+        std::cout << "hiiii" << std::endl;
+
         const char* BOT_TOKEN = std::getenv("BOT_TOKEN");
         if (BOT_TOKEN == NULL) {
                 std::cout << "$BOT_TOKEN Not defined" << std::endl;
@@ -15,10 +21,10 @@ int main() {
 
         bot.on_log(dpp::utility::cout_logger());
 
-        bot.on_slashcommand([](const dpp::slashcommand_t& event) {
-                        if (event.command.get_command_name() == "ping") {
-                        event.reply("Pong!");
-                        }
+        bot.on_slashcommand([&quotes](const dpp::slashcommand_t& event) {
+                                if (event.command.get_command_name() == "ping") {
+                                        event.reply("ni");
+                                }
                         });
 
         bot.on_ready([&bot](const dpp::ready_t& event) {

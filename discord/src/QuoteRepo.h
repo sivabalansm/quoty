@@ -4,20 +4,23 @@
 #include <iostream>
 
 class QuoteRepo {
-        private:
+        public:
                 void addQuote(std::string quote);
 
                 bool removeQuote(std::string quote);
 
-                std::vector<std::string> getQuotes();
+                std::vector<std::string> getQuotes() const;
 
                 bool isQuote(std::string quote);
 
-                std::string getRandomQuote();
+                std::string getRandomQuote() const;
 
-                static std::vector<std::string> loadFromFile(std::string filename);
+                void loadFromFile(std::string filename);
 
-                static std::vector<std::string> saveToFile(std::string filename);
+                void saveToFile(std::string filename);
+
+                QuoteRepo(std::vector<std::string> quotes);
+                QuoteRepo(std::string filename);
 
         private:
                 std::vector<std::string> quotes;
