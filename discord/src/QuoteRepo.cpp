@@ -47,6 +47,10 @@ void QuoteRepo::saveToFile(std::string filename) {
                 
 void QuoteRepo::loadFromFile(std::string filename) {
         std::ifstream file = std::ifstream(filename);
+        if (!file) {
+                std::cerr << "File cannot be opened" << std::endl;
+                return;
+        }
         std::string line;
         while (std::getline(file, line)) { // getline removes new line automatically!
                 if (line != "")

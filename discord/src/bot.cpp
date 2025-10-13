@@ -28,9 +28,11 @@ int main() {
                 std::exit(1);
         }
 
-     std::string str(BOT_TOKEN);
+        std::string str(BOT_TOKEN);
 
         dpp::cluster bot(str);
+
+        bool toggle = false;
 
 
         bot.on_log(dpp::utility::cout_logger());
@@ -46,22 +48,28 @@ int main() {
                                         quotes.saveToFile(filename);
                                         event.reply("Added quote: " + newQuote);
                                 }
-                        });
+        });
 
         
-        bot.on_ready([&bot, &quotes](const dpp::ready_t& event) {
-                        bot.start_timer([&bot, &quotes, &y](const dpp::timer &timer) {
+        bot.on_ready([&bot, &quotes, &toggle](const dpp::ready_t& event) {
+                        bot.start_timer([&bot, &quotes, &toggle](const dpp::timer &timer) {
+                                        if (toggle) {
                                                 bot.message_create(dpp::message(1066927523197370390, quotes.getRandomQuote()));
+                                        }
 
 
-                                        },10);
+                        }, 5);
 
                         if (dpp::run_once<struct register_bot_commands>()) {
                                 bot.global_command_create(dpp::slashcommand("randomquote", "Get a random quote!", bot.me.id));
                                 bot.global_command_create(dpp::slashcommand("addquote", "Add a quote to your quotebook", bot.me.id).add_option(dpp::command_option(dpp::co_string, "quote", "new quote you would like to add", true)));
                         }
-                        });
+        });
 
         std::cout << "Starting bot" << std::endl;
-        bot.start(dpp::st_wait);
+        bot.start(dpp::st_return);
+        while (true) {
+                std::this_thread::sleep_for(std::chrono::seconds(30));
+                toggle = !toggle;
+        }
 }
