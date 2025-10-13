@@ -1,6 +1,20 @@
 #include <dpp/dpp.h>
 #include "QuoteRepo.h"
  
+int randomNumber(int min = 0, int max = 0) {
+        srand(time(0));
+        if (min > max)
+                return 0;
+
+        int randomNum = min + (rand() % (max - min));
+        return randomNum;
+}
+
+int tenORtwenty() {
+        if (randomNumber(0, 2) == 1)
+                return 20;
+        return 10;
+}
 
 int main() {
         // setup quotes
@@ -14,9 +28,10 @@ int main() {
                 std::exit(1);
         }
 
-        std::string str(BOT_TOKEN);
+     std::string str(BOT_TOKEN);
 
         dpp::cluster bot(str);
+
 
         bot.on_log(dpp::utility::cout_logger());
 
@@ -35,10 +50,11 @@ int main() {
 
         
         bot.on_ready([&bot, &quotes](const dpp::ready_t& event) {
-                        bot.start_timer([&bot, &quotes](const dpp::timer &timer) {
+                        bot.start_timer([&bot, &quotes, &y](const dpp::timer &timer) {
                                                 bot.message_create(dpp::message(1066927523197370390, quotes.getRandomQuote()));
 
-                                        }, 10);
+
+                                        },10);
 
                         if (dpp::run_once<struct register_bot_commands>()) {
                                 bot.global_command_create(dpp::slashcommand("randomquote", "Get a random quote!", bot.me.id));
