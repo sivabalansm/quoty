@@ -53,7 +53,7 @@ void QuoteRepo::loadFromFile(std::string filename) {
         }
         std::string line;
         while (std::getline(file, line)) { // getline removes new line automatically!
-                if (line != "")
+                if (line != "" && !isQuote(line))
                         quotes.push_back(line);
         }
         file.close();
