@@ -1,0 +1,11 @@
+services:
+  quoty:
+    env_file: ./.env
+    build:
+      context: ./
+    volumes:
+      - "$LOCATION/quote.md:/app/quote.md"
+      - "./src:/app/src"
+      - "./entrypoint.sh:/app/entrypoint.sh"
+
+      

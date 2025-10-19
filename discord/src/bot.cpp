@@ -46,6 +46,7 @@ int main() {
         std::cout << "Starting bot" << std::endl;
         bot.start(dpp::st_return);
 
+        bot.message_create(dpp::message(1066927523197370390, "Bot started successfully"));
         // Might as well implement my own timer
         while (true) {
                 std::time_t now = std::time(NULL);
